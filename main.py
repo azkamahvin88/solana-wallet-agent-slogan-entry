@@ -17,6 +17,17 @@ import os
 # judge's five criteria.
 SLOGAN = "One wallet, one agent, zero chores on Solana."
 
+# Gate guard: the entry must satisfy the competition gate before it is
+# written — 1-140 characters, at most 20 words, a single line, no
+# surrounding whitespace — so a future slogan change can never silently
+# break the gate and cost the entry its judging.
+if not 1 <= len(SLOGAN) <= 140:
+    raise SystemExit(f"slogan must be 1-140 characters, got {len(SLOGAN)}")
+if len(SLOGAN.split()) > 20:
+    raise SystemExit(f"slogan must be at most 20 words, got {len(SLOGAN.split())}")
+if "\n" in SLOGAN or SLOGAN != SLOGAN.strip():
+    raise SystemExit("slogan must be a single line with no surrounding whitespace")
+
 OUTPUT_DIR = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
